@@ -17,17 +17,40 @@ import { Images } from "lucide-react"
 import { useRef, useState } from "react"
 import { readFileAsDataUrl } from "@/lib/readFileasUrl"
 import Image from "next/image"
+import { createPostAction } from "@/lib/serverAction"
 
 
 export function PostDialog({ setOpen, open, src }: { setOpen: any, open: boolean, src: string }) {
     const inputRef = useRef<HTMLInputElement>(null)
     const [selectedFile, setSelectedFile] = useState<string>('');
+    const [text, setText] = useState<string>('');
+    const inputTextHandler = (e: any) => {
+        setText(e.target.value)
+
+    }
     const fileHanderChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
             const dataUrl = await readFileAsDataUrl(file)
             setSelectedFile(dataUrl);
         }
+
+    }
+
+    const createPostHandler = async (formData: FormData) => {
+        const inputText = formData.get('inputText') as string;
+        try {
+
+            await createPostAction(inputText, selectedFile);
+        } catch (error) {
+            console.log(error)
+
+        } finally {
+            setText('');
+            setOpen(false)
+        }
+
+
 
     }
     console.log(selectedFile)
@@ -51,11 +74,13 @@ export function PostDialog({ setOpen, open, src }: { setOpen: any, open: boolean
                         done.
                     </DialogDescription> */}
                 </DialogHeader>
-                <form>
+                <form action={createPostHandler}>
                     <div className="flex flex-col gap-2
                     ">
                         <div>
                             <Textarea
+                                value={text}
+                                onChange={inputTextHandler}
                                 typeof="text"
                                 placeholder="Write Your Post.."
                                 id="name"

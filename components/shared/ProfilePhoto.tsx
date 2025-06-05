@@ -6,10 +6,8 @@ import { AvatarImage } from '@radix-ui/react-avatar'
 const ProfilePhoto = ({ src }: { src: string }) => {
     return (
         <div>
-            <Avatar
 
-
-            >
+            <Avatar >
                 <AvatarImage
                     src={src}
 
@@ -23,8 +21,11 @@ const ProfilePhoto = ({ src }: { src: string }) => {
 
             </Avatar>
 
+
+
         </div>
     )
-}
+};
+
 
 export default ProfilePhoto

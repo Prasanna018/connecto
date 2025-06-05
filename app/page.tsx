@@ -6,7 +6,7 @@ import React from 'react'
 
 const Home = async () => {
   const user = await currentUser();
-  console.log(user)
+
   return (
     <div className='mt-20'>
       <div className='flex justify-between max-w-6xl mx-auto gap-2
